@@ -1,0 +1,37 @@
+{
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "name": "nest-core",
+  "root": "libs/nest-core",
+  "sourceRoot": "libs/nest-core/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nx/js:tsc",
+      "outputs": [
+        "{projectRoot}/dist"
+      ],
+      "options": {
+        "main": "libs/nest-core/src/index.ts",
+        "tsConfig": "libs/nest-core/tsconfig.lib.json",
+        "outputPath": "dist/libs/nest-core"
+      }
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint",
+      "outputs": []
+    },
+    "typecheck": {
+      "executor": "@nx/js:tsc",
+      "options": {
+        "main": "libs/nest-core/src/index.ts",
+        "tsConfig": "libs/nest-core/tsconfig.lib.json",
+        "outputPath": "dist/libs/nest-core",
+        "noEmit": true
+      }
+    }
+  },
+  "tags": [
+    "scope:core",
+    "type:lib"
+  ]
+}

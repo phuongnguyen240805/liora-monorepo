@@ -1,0 +1,6 @@
+{
+    "name": "@liora/shared",
+    "version": "1.0.0",
+    "main": "dist/libs/shared/index.js",
+    "types": "dist/libs/shared/index.d.ts"
+}

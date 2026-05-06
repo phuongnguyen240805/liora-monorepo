@@ -1,0 +1,7 @@
+{
+    "name": "@liora/dto",
+    "version": "1.0.0",
+    "main": "dist/libs/dto/index.js",
+    "types": "dist/libs/dto/index.d.ts"
+    
+}

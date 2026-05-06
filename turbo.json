@@ -1,0 +1,60 @@
+{
+    "$schema": "https://turbo.build/schema.json",
+    "globalDependencies": [
+        "**/.env.*",
+        "**/package.json"
+    ],
+    "globalEnv": [
+        "NODE_ENV",
+        "DATABASE_URL",
+        "JWT_SECRET",
+        "REDIS_URL",
+        "STRIPE_SECRET_KEY"
+    ],
+    "pipeline": {
+        "build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "dist/**",
+                ".nest/**",
+                "coverage/**"
+            ],
+            "cache": true
+        },
+        "lint": {
+            "outputs": [],
+            "cache": true
+        },
+        "test": {
+            "outputs": [
+                "coverage/**"
+            ],
+            "cache": true
+        },
+        "typecheck": {
+            "outputs": [],
+            "cache": true
+        },
+        "dev": {
+            "cache": false,
+            "persistent": true
+        },
+        "migration:generate": {
+            "cache": false
+        },
+        "migration:run": {
+            "cache": false
+        },
+        "@liora/nest-core#build": {
+            "dependsOn": [
+                "^build"
+            ],
+            "outputs": [
+                "dist/**"
+            ],
+            "cache": true
+        }
+    }
+}

@@ -1,0 +1,24 @@
+{
+    "name": "database",
+    "$schema": "../../node_modules/nx/schemas/project-schema.json",
+    "sourceRoot": "libs/database/src",
+    "projectType": "library",
+    "targets": {
+        "build": {
+            "executor": "@nx/js:tsc",
+            "outputs": [
+                "{options.outputPath}"
+            ],
+            "options": {
+                "outputPath": "dist/libs/database",
+                "tsConfig": "libs/database/tsconfig.lib.json",
+                "main": "libs/database/src/index.ts",
+                "rootDir": "src"
+            },
+            "dependsOn": ["nest-core:build"]
+        },
+        "lint": {
+            "executor": "@nx/eslint:lint"
+        }
+    }
+}

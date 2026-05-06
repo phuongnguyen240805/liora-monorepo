@@ -1,0 +1,63 @@
+# ==================== Dependencies ====================
+node_modules/
+.pnpm-store/
+# pnpm-lock.yaml   
+
+# ==================== Build & Dist ====================
+dist/
+build/
+.out/
+coverage/
+*.tsbuildinfo
+
+# ==================== Caches & Temp ====================
+.nx/
+.turbo/
+.tmp/
+tmp/
+.cache/
+.eslintcache
+.stylelintcache
+
+# ==================== Logs & Debug ====================
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# ==================== Environment & Secrets ====================
+.env
+.env.local
+.env.*.local
+.env.development
+.env.production
+*.env
+
+# ==================== IDE & Editor ====================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==================== Nx & Turbo specific ====================
+.nx/cache
+.turbo/cache
+.turbo/runs
+
+# ==================== Test & Coverage ====================
+jest-coverage/
+coverage/
+
+# ==================== Optional (tùy theo bạn) ====================
+# *.spec.ts          
+# *.test.ts
+# libs/*/e2e/        # nếu có e2e folder
+
+# ==================== Misc ====================
+*.tgz
+*.tar.gz
+*.zip

@@ -1,0 +1,7 @@
+packages:
+  # Tất cả các ứng dụng (deployable)
+  - 'apps/*'
+  # Tất cả các thư viện dùng chung (single source of truth)
+  - 'libs/*'
+  # Tools & generators (nếu sau này bạn thêm)
+  - 'tools/*'
