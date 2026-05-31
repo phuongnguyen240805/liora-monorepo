@@ -1,5 +1,5 @@
 import { Column, Entity, OneToMany } from 'typeorm';
-import { CompleteEntity } from '../../common/entity/common.entity';
+import { CompleteEntity } from '@liora/database/base.entity';
 import { TenantUser } from './tenant-user.entity';
 
 @Entity('tenants')
@@ -16,8 +16,8 @@ export class Tenant extends CompleteEntity {
   @Column({ default: 'active', length: 20 })
   status?: 'active' | 'inactive' | 'suspended';
 
-  @Column({ type: 'jsonb', nullable: true })
-  settings?: Record<string, any>;    // commission rate, theme, config...
+  @Column({ type: 'json', nullable: true })
+  settings?: Record<string, any>;    
 
   @OneToMany(() => TenantUser, (user) => user.tenant, { cascade: true })
   users?: TenantUser[];

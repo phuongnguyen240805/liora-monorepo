@@ -1,5 +1,7 @@
 import { Module } from '@nestjs/common'
 
+import { join } from 'path'
+
 import { ConfigService } from '@nestjs/config'
 import { TypeOrmModule } from '@nestjs/typeorm'
 
@@ -31,6 +33,11 @@ const providers = [EntityExistConstraint, UniqueConstraint]
 
         return {
           ...configService.get<IDatabaseConfig>('database', { infer: true }),
+          // Override entities path with runtime-safe absolute glob.
+          // The static 'dist/modules/**/*.entity.js' path in database.config.ts
+          // is wrong when running from a bundled Nx app output directory.
+          // Using __dirname ensures TypeORM finds all entities in the current bundle.
+          entities: [join(__dirname, '**/*.entity.js')],
           autoLoadEntities: true,
           logging: loggerOptions,
           logger: new TypeORMLogger(loggerOptions),

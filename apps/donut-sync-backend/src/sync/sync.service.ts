@@ -1009,7 +1009,7 @@ export class SyncService implements OnModuleInit {
     count: number,
   ): Promise<void> {
     const url = `${this.backendInternalUrl}/api/auth/internal/profile-usage`;
-    const response = await fetch(url, {
+    const response: any = await fetch(url, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

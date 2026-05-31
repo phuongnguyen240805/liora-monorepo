@@ -5,9 +5,10 @@ import { TenantGuard } from './tenant.guard';
 import { TenantContextInterceptor } from './tenant-context.interceptor';
 import { TenantService } from './tenant.service';
 import { Tenant } from './entities/tenant.entity';
+import { TenantUser } from './entities/tenant-user.entity';
 
 @Module({
-    imports: [TypeOrmModule.forFeature([Tenant])],
+    imports: [TypeOrmModule.forFeature([Tenant, TenantUser])],
     providers: [
         TenantContextService,
         TenantGuard,

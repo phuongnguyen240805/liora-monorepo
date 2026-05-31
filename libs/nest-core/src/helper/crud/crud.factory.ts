@@ -28,15 +28,12 @@ export function BaseCrudFactory<
 
   dto = dto ?? class extends entity {}
 
-  class Dto extends dto {
-    static override readonly name = upperFirst(`${pluralizeName}Dto`)
-  }
-  class UpdateDto extends PartialType(Dto) {
-    static override readonly name = upperFirst(`${pluralizeName}UpdateDto`)
-  }
-  class QueryDto extends IntersectionType(PagerDto, PartialType(Dto)) {
-    static override readonly name = upperFirst(`${pluralizeName}QueryDto`)
-  }
+  class Dto extends dto {}
+  Object.defineProperty(Dto, 'name', { value: upperFirst(`${pluralizeName}Dto`) })
+  class UpdateDto extends PartialType(Dto) {}
+  Object.defineProperty(UpdateDto, 'name', { value: upperFirst(`${pluralizeName}UpdateDto`) })
+  class QueryDto extends IntersectionType(PagerDto, PartialType(Dto)) {}
+  Object.defineProperty(QueryDto, 'name', { value: upperFirst(`${pluralizeName}QueryDto`) })
 
   permissions = permissions ?? {
     LIST: `${prefix}:list`,

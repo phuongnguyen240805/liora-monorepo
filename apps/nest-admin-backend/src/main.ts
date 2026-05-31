@@ -1,22 +1,35 @@
 import { HttpStatus, UnprocessableEntityException, ValidationPipe } from "@nestjs/common";
+import { ConfigService } from "@nestjs/config";
 import { NestFactory } from "@nestjs/core";
+import type { NestFastifyApplication } from "@nestjs/platform-fastify";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
+import { useContainer } from "class-validator";
 
-import { AppModule } from "./app.module.js";
-
-function validateEnv() {
-  if (!process.env.SYNC_TOKEN && !process.env.SYNC_JWT_PUBLIC_KEY) {
-    console.error("Either SYNC_TOKEN or SYNC_JWT_PUBLIC_KEY must be set");
-    process.exit(1);
-  }
-}
+import { AppModule } from "./app/app.module";
+import {
+  API_SECURITY_AUTH,
+  fastifyApp,
+  isDev,
+  LoggingInterceptor,
+  RedisIoAdapter,
+  ResOp,
+  TenantInterceptor,
+  TreeResult,
+  Pagination,
+} from "@liora/nest-core";
+import { CommonEntity } from "@liora/database";
 
 async function bootstrap() {
-  validateEnv();
+  const app = await NestFactory.create<NestFastifyApplication>(
+    AppModule,
+    fastifyApp,
+    {
+      bufferLogs: true,
+    }
+  );
 
-  const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
-  });
+  // class-validator DI
+  useContainer(app.select(AppModule), { fallbackOnErrors: true });
 
   // Enable CORS
   app.enableCors({
@@ -26,10 +39,21 @@ async function bootstrap() {
     allowedHeaders: ["Content-Type", "Authorization", "Accept"],
   });
 
-  // Global Prefix for API endpoints
+  // Global Prefix
   app.setGlobalPrefix("api", {
-    exclude: ["v1/objects/(.*)", "health", "readyz", ""],
+    exclude: ["health", "readyz", ""],
   });
+
+  // Shutdown Hooks in Prod
+  if (!isDev) {
+    app.enableShutdownHooks();
+  }
+
+  // Interceptors
+  if (isDev) {
+    app.useGlobalInterceptors(new LoggingInterceptor());
+  }
+  app.useGlobalInterceptors(new TenantInterceptor());
 
   // Validation Pipe
   app.useGlobalPipes(
@@ -50,24 +74,30 @@ async function bootstrap() {
     })
   );
 
-  // Swagger UI Setup (Documents ONLY the Donut Sync API)
+  // WebSockets Redis Adapter
+  app.useWebSocketAdapter(new RedisIoAdapter(app));
+
+  // Swagger UI Setup for Liora NestAdmin
   const swaggerConfig = new DocumentBuilder()
-    .setTitle("Donut Sync API")
+    .setTitle("Liora NestAdmin API")
     .setDescription(`
       🔷 **Base URL**: \`/api\` <br>
-      📌 Donut Sync Backend API Documentation.
+      📌 Liora NestJS Admin Platform API Documentation.
     `)
     .setVersion("1.0")
     .addServer(`/api`, "Base URL")
-    .addSecurity("bearer", {
-      description: "Enter Bearer JWT Token or Sync Token",
+    .addSecurity(API_SECURITY_AUTH, {
+      description: "Enter Bearer JWT Token",
       type: "http",
       scheme: "bearer",
       bearerFormat: "JWT",
     })
     .build();
 
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
+  const document = SwaggerModule.createDocument(app, swaggerConfig, {
+    ignoreGlobalPrefix: true,
+    extraModels: [CommonEntity, ResOp, Pagination, TreeResult],
+  });
 
   SwaggerModule.setup("docs", app, document, {
     swaggerOptions: {
@@ -76,9 +106,9 @@ async function bootstrap() {
     jsonDocumentUrl: "/docs/json",
   });
 
-  const port = process.env.PORT ?? 3000;
+  const port = process.env.PORT ?? 7001;
   await app.listen(port, "0.0.0.0");
-  console.log(`Donut Sync service running on port ${port}`);
+  console.log(`Liora NestAdmin service running on port ${port}`);
   console.log(`Swagger UI: http://localhost:${port}/docs`);
 }
 

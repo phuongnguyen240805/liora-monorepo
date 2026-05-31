@@ -1,27 +1,3 @@
-# services:
-#   minio:
-#     image: minio/minio:latest
-#     ports:
-#       - "8987:9000"
-#       - "8988:9001"
-#     environment:
-#       MINIO_ROOT_USER: minioadmin
-#       MINIO_ROOT_PASSWORD: minioadmin
-#     command: server /data --console-address ":9001"
-#     healthcheck:
-#       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
-#       interval: 5s
-#       timeout: 5s
-#       retries: 5
-#     volumes:
-#       - minio_data:/data
-
-# volumes:
-#   minio_data:
-
-
-version: '3.9'
-
 services:
   donut-sync:
     build:
@@ -31,15 +7,47 @@ services:
     container_name: liora-donut-sync
     restart: unless-stopped
     ports:
-      - "3001:3000"                 
+      - "7001:7001"                 
     environment:
       - NODE_ENV=production
-      - SYNC_TOKEN=${SYNC_TOKEN}
+      - PORT=7001
+      - SYNC_TOKEN=${SYNC_TOKEN:-secret-sync-token}
+      - S3_ENDPOINT=http://minio:9000
+      - S3_ACCESS_KEY_ID=minioadmin
+      - S3_SECRET_ACCESS_KEY=minioadmin
+      - S3_BUCKET=donut-sync
+      - S3_REGION=us-east-1
+      - S3_FORCE_PATH_STYLE=true
     depends_on:
-      db:
+      minio:
         condition: service_healthy
     networks:
       - liora_network
+
+  minio:
+    image: minio/minio:latest
+    container_name: liora-minio
+    command: server /data --console-address ":9001"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+      MINIO_BROWSER: "on"
+    volumes:
+      - minio_data:/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    restart: unless-stopped
+    networks:
+      - liora_network
+
+volumes:
+  minio_data:
 
 networks:
   liora_network:

@@ -7,11 +7,12 @@ import { AuthModule } from '../auth/auth.module'
 import { BillingController } from './billing.controller'
 import { CreditWallet } from './entities/credit-wallet.entity'
 import { Subscription } from './entities/subscription.entity'
+import { Organization } from './entities/organization.entity'
 import { BillingService } from './services/billing.service'
 import { SubscriptionService } from './services/subscription.service'
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Subscription, CreditWallet]), AuthModule],
+  imports: [TypeOrmModule.forFeature([Subscription, CreditWallet, Organization]), AuthModule],
   controllers: [BillingController],
   providers: [BillingService, SubscriptionService, StripeService, Nowpayments],
   exports: [BillingService, SubscriptionService],

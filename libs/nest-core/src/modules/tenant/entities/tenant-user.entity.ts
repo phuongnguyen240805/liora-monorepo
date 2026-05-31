@@ -1,5 +1,5 @@
 import { Column, Entity, ManyToOne } from 'typeorm';
-import { CompleteEntity } from '../../common/entity/common.entity';
+import { CompleteEntity } from '@liora/database/base.entity';
 import { Tenant } from './tenant.entity';
 
 @Entity('tenant_users')

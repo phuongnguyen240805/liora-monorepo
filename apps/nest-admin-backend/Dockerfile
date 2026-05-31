@@ -20,16 +20,16 @@ COPY . .
 RUN pnpm install --frozen-lockfile
 
 # Expose port
-EXPOSE 3000
+EXPOSE 7001
 
 # Command cho dev mode (Nx serve)
-CMD ["pnpm", "nx", "serve", "donut-sync-backend", "--host=0.0.0.0", "--skip-nx-cache"]
+CMD ["pnpm", "nx", "serve", "nest-admin-backend", "--host=0.0.0.0", "--skip-nx-cache"]
 
 # =============== BUILD STAGE (cho production) ===============
 FROM base AS builder
 WORKDIR /app
 COPY . .
-RUN pnpm nx build donut-sync-backend --prod
+RUN pnpm nx build nest-admin-backend --prod
 
 # =============== PRODUCTION STAGE ===============
 FROM node:20-alpine AS production
@@ -37,9 +37,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 
 # Copy built dist và node_modules
-COPY --from=builder /app/dist/apps/donut-sync-backend ./dist
+COPY --from=builder /app/dist/apps/nest-admin-backend ./dist
 COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/apps/donut-sync-backend/package.json ./
+COPY --from=builder /app/apps/nest-admin-backend/package.json ./
 
-EXPOSE 3000
+EXPOSE 7001
 CMD ["node", "dist/main.js"]

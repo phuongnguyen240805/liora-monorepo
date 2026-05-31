@@ -1,8 +1,19 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "baseUrl": ".",
+    "rootDir": "../..",
+    "paths": {
+      "~/*": ["src/*"],
+      "@liora/database": ["../database/src/index.ts"],
+      "@liora/database/*": ["../database/src/*"],
+      "@liora/dto": ["../dto/src/index.ts"],
+      "@liora/dto/*": ["../dto/src/*"],
+      "@liora/shared": ["../shared/src/index.ts"],
+      "@liora/shared/*": ["../shared/src/*"]
+    },
     "module": "commonjs",
-    "forceConsistentCasingInFileNames": true,
+    "forceConsistentCasingInFileNames": false,
     "strict": false,
     "importHelpers": true,
     "noImplicitOverride": true,

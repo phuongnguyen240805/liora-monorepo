@@ -145,3 +145,5 @@ export async function paginate<T extends ObjectLiteral>(
     ? paginateRepository<T>(repositoryOrQueryBuilder, options, searchOptions)
     : paginateQueryBuilder<T>(repositoryOrQueryBuilder, options)
 }
+
+export * from './pagination';

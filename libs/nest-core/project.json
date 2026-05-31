@@ -6,12 +6,13 @@
   "tags": ["scope:core", "type:library"],
   "targets": {
     "build": {
-      "executor": "@nx/js:tsc",
+      "executor": "@nx/js:swc",
       "outputs": ["{options.outputPath}"],
       "options": {
         "outputPath": "dist/libs/nest-core",
         "main": "libs/nest-core/src/index.ts",
         "tsConfig": "libs/nest-core/tsconfig.lib.json",
+        "skipTypeCheck": true,
         "assets": ["libs/nest-core/*.md"]
       }
     }

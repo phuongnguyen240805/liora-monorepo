@@ -1,6 +1,5 @@
 import { Injectable, Scope } from '@nestjs/common';
-import { ClsService } from 'nestjs-cls';
-import { ClsStore } from '../types/cls-store';
+import { ClsService, ClsStore } from 'nestjs-cls';
 
 export const TENANT_CONTEXT_KEY = 'tenantId' as const;
 
