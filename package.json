@@ -15,7 +15,8 @@
     "clean": "rm -rf dist .nx/cache tmp",
     "dev:goodshort": "nx serve goodshort-backend",
     "dev:openclaw": "nx serve openclaw-backend",
-    "dev:centrix": "nx serve centrix-backend"
+    "dev:centrix": "nx serve centrix-backend",
+    "graph": "pnpm nx graph"
   },
   "devDependencies": {
     "@eslint/js": "^9.8.0",

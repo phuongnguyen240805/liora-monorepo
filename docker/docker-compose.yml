@@ -82,6 +82,8 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
+    networks:
+      - liora-network
 
   # ================== DONUT-SYNC BACKEND ==================
   donut-sync:
@@ -139,6 +141,10 @@ services:
       timeout: 5s
       retries: 5
     restart: unless-stopped
+
+networks:
+  liora-network:
+    driver: bridge
 
 volumes:
   mysql_data:

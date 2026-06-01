@@ -11,7 +11,7 @@
         "REDIS_URL",
         "STRIPE_SECRET_KEY"
     ],
-    "pipeline": {
+    "tasks": {
         "build": {
             "dependsOn": [
                 "^build"
